@@ -2,7 +2,7 @@
 fine tuning  qwen model of 0.5 billion parameters to a custom instruct dataset using unsloth
 
 
-# process in finetuning
+# Processes in Finetuning
 1.import FastLanguageModel from unsloth 
 
 2.using from_pretrained function get model from huggingface
