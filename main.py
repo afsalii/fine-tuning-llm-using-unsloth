@@ -35,3 +35,12 @@ def isit4bit(model):
     return False
 
 
+#set the tockenizer as itself when the there is no tokenizer in the model,but the model has a tokenizer,then set the tokenizer as eos tocken
+def tockeniser(tokenizer):
+    if tokenizer is None:
+        return tokenizer.pad_token=tockenizer.eos_token
+    return tockenizer
+
+
+    
+
