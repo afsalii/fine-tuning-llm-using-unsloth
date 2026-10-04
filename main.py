@@ -42,5 +42,11 @@ def tockeniser(tokenizer):
     return tockenizer
 
 
-    
+#attaching lora adapters
+
+def lora_get_adapters():
+    return ["k_proj","q_proj","v_proj","o_proj"]
+
+
+
 
