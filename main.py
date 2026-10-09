@@ -42,11 +42,26 @@ def tockeniser(tokenizer):
     return tockenizer
 
 
-#attaching lora adapters
+#get_lora_adapters
 
 def lora_get_adapters():
     return ["k_proj","q_proj","v_proj","o_proj"]
 
+
+
+#attach lora adapters
+
+def attach_lora_adapters(model,r=8,lora_alpha=16,target_modules=None)
+   if target_modules is None:
+        target_modules = lora_get_adapters()
+    else:
+        adapters=FastLanguageModel.get_lora_adapters(
+            model,
+            r=r,
+            lora_alpha=lora_alpha,  
+            target_modules=target_modules
+        )
+    return adapters
 
 
 
