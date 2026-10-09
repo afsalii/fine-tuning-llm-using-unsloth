@@ -12,3 +12,6 @@ fine tuning  qwen model of 0.5 billion parameters to a custom instruct dataset u
 3.set the sequence_length,load it in 4bit
 
 4.some qwen models comes with preset tockenizer or some decoder models comes with pad_tocken as None ,when the pad_tocken is None set it as <eos> tocken which is referred as end of sentence .
+
+
+5.returning the projection layers(attention layers) where the lora adapters we need to train ,these process is reliable for every model ,but we are training on qwen model 
