@@ -35,11 +35,11 @@ def isit4bit(model):
     return False
 
 
-#set the tockenizer as itself when the there is no tokenizer in the model,but the model has a tokenizer,then set the tokenizer as eos tocken
+#the words or sentence are converted into tockens ,in some llm the pad tockens like eos are not defined so we define it here
 def tockeniser(tokenizer):
     if tokenizer is None:
-        return tokenizer.pad_token=tockenizer.eos_token
-    return tockenizer
+        tokenizer.pad_token = tokenizer.eos_token
+    return tokenizer
 
 
 #get_lora_adapters
@@ -51,11 +51,11 @@ def lora_get_adapters():
 
 #attach lora adapters
 
-def attach_lora_adapters(model,r=8,lora_alpha=16,target_modules=None)
-   if target_modules is None:
+def attach_lora_adapters(model,r=8,lora_alpha=16,target_modules=None):
+    if target_modules is None:
         target_modules = lora_get_adapters()
-    else:
-        adapters=FastLanguageModel.get_lora_adapters(
+    
+    adapters=FastLanguageModel.get_peft_model(
             model,
             r=r,
             lora_alpha=lora_alpha,  
@@ -64,4 +64,34 @@ def attach_lora_adapters(model,r=8,lora_alpha=16,target_modules=None)
     return adapters
 
 
+def number_of_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
+def fraction_of_parameters(trainable_params, total_params):
+    return trainable_params / total_params if total_params > 0 else 0
+
+
+model, tokenizer = loading_model(
+        model_name="unsloth/Qwen2.5-0.5B-Instruct-bnb-4bit",
+        max_seq_length=256,
+    )
+
+print("Total Parameters in the model:",total_parametrs(model))
+
+if isit4bit(model) =="True":
+    print('True')
+else:
+    print('False') 
+
+
+print("Tokenizer:", tockeniser(tokenizer))
+
+print("LoRA Adapters:", lora_get_adapters())
+
+
+lora_adapters = attach_lora_adapters(model, r=8, lora_alpha=16)
+
+print("Number of Parameters in LoRA Adapters:", number_of_parameters(model))
+
+fraction = fraction_of_parameters(number_of_parameters(model), total_parametrs(model))
+print("Fraction of Parameters in LoRA Adapters:", fraction)
