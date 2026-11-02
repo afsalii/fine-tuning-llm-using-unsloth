@@ -21,3 +21,6 @@ thanks to unsloth
 
 
 6.normaly qwen model projection are 4,if target_layers are None,we returns the default model project layers otherwise  we use unsloth function get_peft model 
+
+7.we are taking a dataset and format into instaruction adn response based model,and make into alphico style and tockenise it with hugging face tockenize library
+
