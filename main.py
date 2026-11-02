@@ -79,7 +79,7 @@ model, tokenizer = loading_model(
 print("Total Parameters in the model:",total_parametrs(model))
 
 if isit4bit(model) =="True":
-    print('True')
+    print('True') 
 else:
     print('False') 
 
@@ -95,3 +95,71 @@ print("Number of Parameters in LoRA Adapters:", number_of_parameters(model))
 
 fraction = fraction_of_parameters(number_of_parameters(model), total_parametrs(model))
 print("Fraction of Parameters in LoRA Adapters:", fraction)
+
+
+
+def training_data():
+    dataset=[
+  {
+    "instruction": "What is InnoRoots AI?",
+    "response": "InnoRoots AI is an AI and robotics education initiative based in Mannarkkad, Kerala. It focuses on empowering learners through practical training in Artificial Intelligence, Machine Learning, Robotics, and emerging technologies."
+  },
+  {
+    "instruction": "What courses does InnoRoots AI offer?",
+    "response": "InnoRoots AI provides training in Artificial Intelligence, Machine Learning, Robotics, and other technology-related fields. Learners can explore its official website for current course offerings."
+  },
+  {
+    "instruction": "Where is InnoRoots AI located?",
+    "response": "InnoRoots AI is located opposite MES Kalladi College, Mannarkkad, Palakkad, Kerala, India."
+  },
+  {
+    "instruction": "What is the vision of InnoRoots AI?",
+    "response": "InnoRoots AI aims to democratize intelligence and revolutionize technology through robotics by empowering learners with practical technological skills."
+  },
+  {
+    "instruction": "Does InnoRoots AI provide robotics training?",
+    "response": "Yes. Robotics is one of the key areas of InnoRoots AI's educational initiatives. Its learning approach emphasizes practical projects, experimentation, and hands-on engineering."
+  }
+]
+
+    return dataset
+
+def formatted_data(dataset):
+    strings=( 
+        '### Instruction:\n'
+        f"{dataset['instruction']}\n\n"
+        '### Response:\n'
+         f"{dataset['response']}"
+    )
+    return strings
+
+def format_all(examples):
+    alle=[formatted_data(example) for example in examples]
+
+    return alle
+
+from datasets import Dataset
+
+def build_text_dataset(texts):
+    dataset = Dataset.from_dict({"text": texts})
+    return dataset  
+
+
+def tockenize(tokenizer, texts):
+    tokenized_dataset = tokenizer(
+        texts,
+        padding=True,
+        truncation=True,
+        max_length=256
+    )
+    return tokenized_dataset
+
+
+def count_tokens(tokenized_dataset):
+    return len(tokenized_dataset)
+
+
+print(format_all(training_data())) 
+
+tockenized_dataset = tockenize(tokenizer, format_all(training_data()))
+print("Number of Tokens in Tokenized Dataset:", count_tokens(tockenized_dataset))
