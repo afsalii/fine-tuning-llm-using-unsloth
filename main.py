@@ -163,3 +163,46 @@ print(format_all(training_data()))
 
 tockenized_dataset = tockenize(tokenizer, format_all(training_data()))
 print("Number of Tokens in Tokenized Dataset:", count_tokens(tockenized_dataset))
+
+
+from transforms import TrainingArguments
+
+
+def build_training_Arguments():
+     training=TrainingArguments(
+            output_dir=".",
+            per_device_train_batch_size=1,
+            gradient_accumulation_steps=1,
+            max_steps=100,
+            learning_rate=2e-4,
+            fp16=True,
+            logging_steps=10,
+            report_to="none",
+            save_strategy="no",
+            optim="adamw_torch",
+     )
+     return training
+
+from trl import SFTTrainer
+
+def sft_training():
+
+    training_sft=SFTTrainer(
+        model=model,    
+        dataset=tockenized_dataset,
+        tokenizer=tokenizer,
+        args=training_Args,
+        max_seq_length=256,
+    )
+    return training_sft
+
+
+#run the sft training and resultant loss
+def run_sft_training(trainer):
+    
+    train=trainer.train()
+    metric=trainer.metrics
+    resultant_loss = float(metric["train_loss"])
+    return resultant_loss
+
+
